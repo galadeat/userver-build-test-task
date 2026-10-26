@@ -2,6 +2,8 @@
 
 #include <greeting.hpp>
 
+#include <userver/components/component_list.hpp>
+
 namespace myservice {
 
 HelloGrpc::HelloGrpc(
@@ -14,6 +16,10 @@ HelloGrpc::SayHelloResult HelloGrpc::SayHello(CallContext&, handlers::api::Hello
     handlers::api::HelloResponse response;
     response.set_text(SayHelloTo(request.name(), UserType::kFirstTime));
     return response;
+}
+
+    void AppendHelloGrpc(userver::components::ComponentList& components) {
+    components.Append<HelloGrpc>();
 }
 
 }  // namespace myservice

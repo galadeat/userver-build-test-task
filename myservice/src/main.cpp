@@ -15,9 +15,12 @@
 #include <userver/utils/daemon_run.hpp>
 
 #include <hello.hpp>
-#include <hello_grpc.hpp>     
 #include <hello_mongo.hpp>    
-#include <hello_postgres.hpp> 
+#include <hello_postgres.hpp>
+
+namespace myservice {
+    void AppendHelloGrpc(userver::components::ComponentList& components);
+}
 
 int main(int argc, char* argv[]) {
     auto component_list =
@@ -34,8 +37,8 @@ int main(int argc, char* argv[]) {
             .Append<userver::components::Mongo>("mongo-db-1")
             .Append<myservice::HelloMongo>()
             .AppendComponentList(userver::ugrpc::server::MinimalComponentList())
-            .Append<myservice::HelloGrpc>()
         ;
+    myservice::AppendHelloGrpc(component_list);
 
     return userver::utils::DaemonMain(argc, argv, component_list);
 }

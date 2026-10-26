@@ -10,10 +10,6 @@ ANALYZER="$BUILD_DIR/ClangBuildAnalyzer"
 ANALYZER_COMMIT="55447756ff8af2f87e4a315f2ba637b9380363ea"
 VERSION_FILE="$BUILD_DIR/.analyzer-commit"
 
-if [[ -x "$ANALYZER" ]]; then
-    echo "Clang Build Analyzer is already installed"
-    exit 0
-fi
 
 if [[ ! -d "$SOURCE_DIR/.git" ]]; then
     mkdir -p "$TOOLS_DIR"

@@ -1,5 +1,5 @@
 IMAGE := userver-build-analysis
-SERVICE := myservice
+SERVICE ?= origin
 
 DOCKER_ARGS := --rm \
 	--cpus=4 \
@@ -10,9 +10,11 @@ DOCKER_ARGS := --rm \
 	-w /work
 
 CBA := tools/ClangBuildAnalyzer/build/ClangBuildAnalyzer
-TRACE_BUILD_DIR := myservice/build-release
+TRACE_BUILD_DIR ?= $(SERVICE)/build-release
 
-.PHONY: image shell configure build setup-analyzer analyze
+OUTPUT ?= results/baseline
+
+.PHONY: image shell configure build setup-analyzer analyze reproduce
 
 image:
 	docker build -t $(IMAGE) .
@@ -37,7 +39,10 @@ setup-analyzer:
 	bash scripts/setup-analyzer.sh
 
 analyze: setup-analyzer
-	mkdir -p results
-	$(CBA) --all $(TRACE_BUILD_DIR) results/baseline.bin
-	$(CBA) --analyze results/baseline.bin > results/baseline.txt
-	cat results/baseline.txt
+	mkdir -p "$(dir $(OUTPUT))"
+	$(CBA) --all "$(TRACE_BUILD_DIR)" "$(OUTPUT).bin"
+	$(CBA) --analyze "$(OUTPUT).bin" > "$(OUTPUT).txt"
+	cat "$(OUTPUT).txt"
+
+reproduce:
+	bash scripts/reproduce.sh

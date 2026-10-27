@@ -1,2 +1,27 @@
-# userver-build-test-task
-Test task: Research on build-time bottlenecks in userver-based C++ services
+# Анализ времени компиляции C++ сервиса на userver
+
+Исследование времени компиляции C++-сервиса на userver с использованием Clang Build Analyzer.
+
+Подробное описание эксперимента, результаты и выводы приведены в report.pdf
+
+## Воспроизведение
+
+Для запуска необходимы Docker, Make, Git, CMake и C++-компилятор для сборки Clang Build Analyzer.
+
+Из корня репозитория выполните:
+
+```bash
+make reproduce
+```
+
+Команда собирает Docker-образ, подготавливает Clang Build Analyzer, выполняет по три чистые сборки версий `origin` и `experiment` и сохраняет результаты анализа в каталог `results/`.
+
+**При повторном запуске предыдущие результаты перезаписываются.**
+
+## Структура репозитория
+
+- `origin/` — исходная версия сервиса.
+- `experiment/` — оптимизированная версия сервиса.
+- `scripts/` — скрипты воспроизведения эксперимента.
+- `results/` — результаты Clang Build Analyzer.
+- `report.pdf` — итоговый отчёт.
